@@ -1,4 +1,3 @@
-plugin-mathjax
+MathJAX integration with GitBook
 ==============
 
-MathJAX plugin for GitBook
