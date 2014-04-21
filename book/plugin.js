@@ -8,6 +8,6 @@ $(document).bind("bookReady", function() {
 
 
     gitbook.bind("page.change", function() {
-        
+        MathJax.Hub.Typeset()
     });
 });
