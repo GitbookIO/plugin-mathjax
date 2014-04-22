@@ -6,13 +6,13 @@
     "engines": {
         "gitbook": "*"
     },
-    "homepage": "https://github.com/GitbookIO/gitbook-plugin-mathjax",
+    "homepage": "https://github.com/GitbookIO/plugin-mathjax",
     "repository": {
         "type": "git",
-        "url": "https://github.com/GitbookIO/gitbook-plugin-mathjax.git"
+        "url": "https://github.com/GitbookIO/plugin-mathjax.git"
     },
     "license": "Apache 2",
     "bugs": {
-        "url": "https://github.com/GitbookIO/gitbook-plugin-mathjax/issues"
+        "url": "https://github.com/GitbookIO/plugin-mathjax/issues"
     }
 }
