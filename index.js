@@ -2,8 +2,9 @@ module.exports = {
     book: {
         assets: "./book",
         js: [
-            "http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML",
+            "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&ver=2.4.0",
             "plugin.js"
         ]
     }
 };
+
