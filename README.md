@@ -1,10 +1,10 @@
 MathJAX integration with GitBook
 ==============
 
-This is a default GitBook plugin, You can disable it using:
+This is a default GitBook plugin, You can enable it using:
 
 ```
 {
-    plugins: ["-mathjax"]
+    plugins: ["mathjax"]
 }
 ```
