@@ -43,6 +43,13 @@ function convertTexToSvg(tex, outputPath, options) {
 }
 
 module.exports = {
+    book: {
+        assets: "./book",
+        js: [
+            "https://cdn.mathjax.org/mathjax/2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML",
+            "plugin.js"
+        ]
+    },
     blocks: {
         math: {
             shortcuts: {
@@ -51,6 +58,10 @@ module.exports = {
                 end: "$$"
             },
             process: function(blk) {
+                // For website return as script
+                if (this.book.options.generator == "website") return '<script type="math/tex">'+blk.body+'</script>';
+
+                // For ebook, return as an image
                 var that = this;
                 var tex = blk.body;
                 var fileOutput = "_mathjax/"+countMath+".svg";
