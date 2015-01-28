@@ -9,12 +9,6 @@ var started = false;
 var countMath = 0;
 var parsed = {};
 
-function escapeShellArg(arg) {
-    var ret = '';
-    ret = arg.replace(/"/g, '\\"');
-    return "\"" + ret + "\"";
-}
-
 function convertTexToSvg(tex, outputPath, options) {
     var d = Q.defer();
     options = options || {};
@@ -63,8 +57,7 @@ module.exports = {
 
                 var hashTex = crc.crc32(tex).toString(16);
 
-
-                that.book.log.info("process TeX using MathJAX", countMath, tex);
+                that.book.log.info("process TeX using MathJAX", countMath, "...");
                 return Q()
                 .then(function() {
                     if (parsed[hashTex]) {
