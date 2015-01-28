@@ -6,6 +6,10 @@
     "engines": {
         "gitbook": "*"
     },
+    "dependencies": {
+        "mathjax": "git+https://github.com/mathjax/MathJax-node.git#abda209377c8f3dae1d8f183f9075311806912d2",
+        "q": "1.1.2"
+    },
     "homepage": "https://github.com/GitbookIO/plugin-mathjax",
     "repository": {
         "type": "git",
