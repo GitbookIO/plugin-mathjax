@@ -7,9 +7,9 @@ var mjAPI = require('MathJax-node/lib/mj-single.js');
 
 var started = false;
 var countMath = 0;
-var parsed = {};
+var cache = {};
 
-function convertTexToSvg(tex, outputPath, options) {
+function convertTexToSvg(tex, options) {
     var d = Q.defer();
     options = options || {};
 
@@ -31,23 +31,21 @@ function convertTexToSvg(tex, outputPath, options) {
         linebreaks: !!options.linebreaks
     }, function (data) {
         if (data.errors) {
-            console.log(data.errors)
             return d.reject(new Error(data.errors));
         }
-
-        fs.writeFileSync(outputPath, data.svg);
-        d.resolve();
+        d.resolve(options.write? null : data.svg);
     });
 
     return d.promise;
 }
 
+
 module.exports = {
     book: {
         assets: "./book",
         js: [
-            "https://cdn.mathjax.org/mathjax/2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML",
-            "plugin.js"
+            //"https://cdn.mathjax.org/mathjax/2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML",
+           // "plugin.js"
         ]
     },
     blocks: {
@@ -59,40 +57,38 @@ module.exports = {
             },
             process: function(blk) {
                 // For website return as script
-                if (this.book.options.generator == "website") return '<script type="math/tex">'+blk.body+'</script>';
+                //if (this.book.options.generator == "website") return '<script type="math/tex">'+blk.body+'</script>';
 
-                // For ebook, return as an image
                 var that = this;
                 var tex = blk.body;
-                var fileOutput = "_mathjax/"+countMath+".svg";
+                var isInline = !(tex[0] == "\n");
 
+                // Check if not already cached
                 var hashTex = crc.crc32(tex).toString(16);
+                if (cache[hashTex]) return cache[hashTex];
 
+                // If not, process then cache it
                 that.book.log.info("process TeX using MathJAX", countMath, "...");
-                return Q()
-                .then(function() {
-                    if (parsed[hashTex]) {
-                        fileOutput = "_mathjax/"+parsed[hashTex]+".svg";
-                        return;
+                return convertTexToSvg(tex, { inline: isInline })
+                .then(function(svg) {
+                    that.book.log.info.ok();
+
+                    // Cache tex
+                    cache[hashTex] = svg;
+
+                    // Increase counter
+                    countMath = countMath + 1;
+
+                    if (!isInline) {
+                        svg = '<div style="text-align:center;margin: 1em 0em;width: 100%;">'+svg+'</div>';
                     }
 
-                    parsed[hashTex] = countMath;
-                    countMath = countMath + 1;
-                    return convertTexToSvg(tex, path.resolve(that.book.options.output, fileOutput))
-                })
-                .then(function() {
-                    that.book.log.info.ok();
-                    return "<img src='/"+fileOutput+"' />";
+                    return svg;
                 }, function(err) {
                     that.book.log.info.fail();
                     throw err;
                 });
             }
-        }
-    },
-    hooks: {
-        init: function() {
-            fs.mkdirSync(path.join(this.options.output, "_mathjax"));
         }
     }
 };
