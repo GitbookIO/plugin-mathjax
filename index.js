@@ -30,9 +30,7 @@ function convertTexToSvg(tex, options) {
         width: options.width || 100,
         linebreaks: !!options.linebreaks
     }, function (data) {
-        if (data.errors) {
-            return d.reject(new Error(data.errors));
-        }
+        if (data.errors) return d.reject(new Error(data.errors));
         d.resolve(options.write? null : data.svg);
     });
 
@@ -44,8 +42,8 @@ module.exports = {
     book: {
         assets: "./book",
         js: [
-            //"https://cdn.mathjax.org/mathjax/2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML",
-           // "plugin.js"
+            "https://cdn.mathjax.org/mathjax/2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML",
+            "plugin.js"
         ]
     },
     blocks: {
@@ -56,12 +54,15 @@ module.exports = {
                 end: "$$"
             },
             process: function(blk) {
-                // For website return as script
-                //if (this.book.options.generator == "website") return '<script type="math/tex">'+blk.body+'</script>';
-
                 var that = this;
                 var tex = blk.body;
                 var isInline = !(tex[0] == "\n");
+
+                // For website return as script
+                this.book.options.pluginsConfig.mathjax = this.book.options.pluginsConfig.mathjax || {};
+                if (this.book.options.generator == "website" && !this.book.options.pluginsConfig.mathjax.forceSVG) {
+                    return '<script type="math/tex; '+(isInline? "": "mode=display"))+'">'+blk.body+'</script>';
+                }
 
                 // Check if not already cached
                 var hashTex = crc.crc32(tex).toString(16);

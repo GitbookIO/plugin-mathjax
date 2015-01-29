@@ -30,3 +30,17 @@ You can also use the shortcut `$$`:
 ```
 When $$a \ne 0$$, there are two solutions to $$(ax^2 + bx + c = 0)$$ and they are $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
 ```
+
+### Configuration
+
+You can force the use of svg pre-processed by adding to your book.json:
+
+```
+{
+	"pluginsConfig": {
+		"mathjax":{
+			"forceSVG": true
+		}
+	}
+}
+```
