@@ -61,7 +61,7 @@ module.exports = {
                 // For website return as script
                 this.book.options.pluginsConfig.mathjax = this.book.options.pluginsConfig.mathjax || {};
                 if (this.book.options.generator == "website" && !this.book.options.pluginsConfig.mathjax.forceSVG) {
-                    return '<script type="math/tex; '+(isInline? "": "mode=display"))+'">'+blk.body+'</script>';
+                    return '<script type="math/tex; '+(isInline? "": "mode=display")+'">'+blk.body+'</script>';
                 }
 
                 // Check if not already cached
