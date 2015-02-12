@@ -7,7 +7,7 @@
         "gitbook": "*"
     },
     "dependencies": {
-        "mathjax": "git+https://github.com/mathjax/MathJax-node.git#abda209377c8f3dae1d8f183f9075311806912d2",
+        "mathjax": "git+https://github.com/mathjax/MathJax-node.git#af95c007de92a796e08ee64c38cda49cb0a1af2d",
         "q": "1.1.2",
         "crc": "3.2.1"
     },
