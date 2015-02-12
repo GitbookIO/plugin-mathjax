@@ -60,35 +60,36 @@ module.exports = {
 
                 // For website return as script
                 this.book.options.pluginsConfig.mathjax = this.book.options.pluginsConfig.mathjax || {};
-                if (this.book.options.generator == "website" && !this.book.options.pluginsConfig.mathjax.forceSVG) {
+                if ((this.book.options.generator == "website" || this.book.options.generator == "json")
+                    && !this.book.options.pluginsConfig.mathjax.forceSVG) {
                     return '<script type="math/tex; '+(isInline? "": "mode=display")+'">'+blk.body+'</script>';
                 }
 
                 // Check if not already cached
                 var hashTex = crc.crc32(tex).toString(16);
-                if (cache[hashTex]) return cache[hashTex];
 
-                // If not, process then cache it
-                that.book.log.info("process TeX using MathJAX", countMath, "...");
-                return convertTexToSvg(tex, { inline: isInline })
-                .then(function(svg) {
-                    that.book.log.info.ok();
+                // Return
+                var imgFilename = "_mathjax_"+hashTex+".svg";
+                var img = '<img src="/'+imgFilename+'" />';
+                if (!isInline) {
+                    img = '<div style="text-align:center;margin: 1em 0em;width: 100%;">'+img+'</div>';
+                }
 
-                    // Cache tex
-                    cache[hashTex] = svg;
+                return {
+                    body: img,
+                    post: function() {
+                        if (cache[hashTex]) return;
 
-                    // Increase counter
-                    countMath = countMath + 1;
+                        cache[hashTex] = true;
+                        countMath = countMath + 1;
 
-                    if (!isInline) {
-                        svg = '<div style="text-align:center;margin: 1em 0em;width: 100%;">'+svg+'</div>';
+                        that.book.log.debug.ln("process TeX using MathJAX", hashTex, "n°"+countMath);
+                        return convertTexToSvg(tex, { inline: isInline })
+                        .then(function(svg) {
+                            return Q.nfcall(fs.writeFile, path.join(that.book.options.output, imgFilename), svg);
+                        });
                     }
-
-                    return svg;
-                }, function(err) {
-                    that.book.log.info.fail();
-                    throw err;
-                });
+                };
             }
         }
     }

@@ -4,7 +4,7 @@
     "main": "index.js",
     "version": "1.0.0-alpha.1",
     "engines": {
-        "gitbook": "*"
+        "gitbook": ">=2.0.0-alpha.8"
     },
     "dependencies": {
         "mathjax": "git+https://github.com/mathjax/MathJax-node.git#af95c007de92a796e08ee64c38cda49cb0a1af2d",
