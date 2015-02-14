@@ -2,7 +2,7 @@
     "name": "gitbook-plugin-mathjax",
     "description": "MathJAX integration into GitBook",
     "main": "index.js",
-    "version": "1.0.0-alpha.1",
+    "version": "1.0.0-alpha.2",
     "engines": {
         "gitbook": ">=2.0.0-alpha.8"
     },
