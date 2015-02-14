@@ -83,7 +83,6 @@ module.exports = {
                         cache[hashTex] = true;
                         countMath = countMath + 1;
 
-                        that.book.log.debug.ln("process TeX using MathJAX", hashTex, "n°"+countMath);
                         return convertTexToSvg(tex, { inline: isInline })
                         .then(function(svg) {
                             return Q.nfcall(fs.writeFile, path.join(that.book.options.output, imgFilename), svg);
