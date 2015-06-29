@@ -49,7 +49,7 @@ module.exports = {
     blocks: {
         math: {
             shortcuts: {
-                parsers: ["markdown"],
+                parsers: ["markdown", "asciidoc", "restructuredtext"],
                 start: "$$",
                 end: "$$"
             },
