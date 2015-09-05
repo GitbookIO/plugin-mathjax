@@ -1,8 +1,6 @@
 require(["gitbook"], function(gitbook) {
     MathJax.Hub.Config({
-        tex2jax: {
-            processEscapes: true
-        }
+        tex2jax: {}
     });
 
 
