@@ -1,7 +1,7 @@
 Math integration with GitBook
 ==============
 
-This plugin uses MathJax to display TeX formula. This is an official plugin. Versions `>=0.1.0` require GitBook `>=2.0.0`.
+This plugin uses MathJax to display Math/TeX formula. This is an official plugin. Versions `>=0.1.0` require GitBook `>=2.0.0`.
 
 ### How to use it?
 
@@ -37,10 +37,10 @@ You can force the use of svg pre-processed by adding to your book.json:
 
 ```
 {
-	"pluginsConfig": {
-		"mathjax":{
-			"forceSVG": true
-		}
-	}
+    "pluginsConfig": {
+        "mathjax":{
+            "forceSVG": true
+        }
+    }
 }
 ```
