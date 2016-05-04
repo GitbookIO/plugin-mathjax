@@ -9,15 +9,38 @@ var started = false;
 var countMath = 0;
 var cache = {};
 
+/**
+    Prepare MathJaX
+*/
+function prepareMathJax() {
+    if (started) {
+        return;
+    }
+
+    mjAPI.config({
+        MathJax: {
+            SVG: {
+                font: 'TeX'
+            }
+        }
+    });
+    mjAPI.start();
+
+    started = true;
+}
+
+/**
+    Convert a tex formula into a SVG text
+
+    @param {String} tex
+    @param {Object} options
+    @return {Promise<String>}
+*/
 function convertTexToSvg(tex, options) {
     var d = Q.defer();
     options = options || {};
 
-    if (!started) {
-        mjAPI.config({MathJax: {SVG: {font: 'TeX'}}});
-        mjAPI.start();
-        started = true;
-    }
+    prepareMathJax();
 
     mjAPI.typeset({
         math: tex,
@@ -30,22 +53,84 @@ function convertTexToSvg(tex, options) {
         width: options.width || 100,
         linebreaks: !!options.linebreaks
     }, function (data) {
-        if (data.errors) return d.reject(new Error(data.errors));
+        if (data.errors) {
+            return d.reject(new Error(data.errors));
+        }
+
         d.resolve(options.write? null : data.svg);
     });
 
     return d.promise;
 }
 
+/**
+    Process a math block
 
-module.exports = {
-    book: {
+    @param {Block} blk
+    @return {Promise<Block>}
+*/
+function processBlock(blk) {
+    var book = this;
+    var tex = blk.body;
+    var isInline = !(tex[0] == "\n");
+
+    // For website return as script
+    var config = book.config.get('pluginsConfig.mathjax', {});
+
+    if ((book.output.name == "website" || book.output.name == "json")
+        && !config.forceSVG) {
+        return '<script type="math/tex; '+(isInline? "": "mode=display")+'">'+blk.body+'</script>';
+    }
+
+    // Check if not already cached
+    var hashTex = crc.crc32(tex).toString(16);
+
+    // Return
+    var imgFilename = '_mathjax_' + hashTex + '.svg';
+    var img = '<img src="/' + imgFilename + '" />';
+
+    // Center math block
+    if (!isInline) {
+        img = '<div style="text-align:center;margin: 1em 0em;width: 100%;">' + img + '</div>';
+    }
+
+    return {
+        body: img,
+        post: function() {
+            if (cache[hashTex]) {
+                return;
+            }
+
+            cache[hashTex] = true;
+            countMath = countMath + 1;
+
+            return convertTexToSvg(tex, { inline: isInline })
+            .then(function(svg) {
+                return book.output.writeFile(imgFilename, svg);
+            });
+        }
+    };
+}
+
+/**
+    Return assets for website
+
+    @return {Object}
+*/
+function getWebsiteAssets() {
+    var version = this.config.get('pluginsConfig.mathjax.version', 'latest');
+
+    return {
         assets: "./book",
         js: [
-            "https://cdn.mathjax.org/mathjax/2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML",
-            "plugin.js"
+            'https://cdn.mathjax.org/mathjax/' + version + '/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
+            'plugin.js'
         ]
-    },
+    };
+}
+
+module.exports = {
+    website: getWebsiteAssets,
     blocks: {
         math: {
             shortcuts: {
@@ -53,43 +138,7 @@ module.exports = {
                 start: "$$",
                 end: "$$"
             },
-            process: function(blk) {
-                var that = this;
-                var tex = blk.body;
-                var isInline = !(tex[0] == "\n");
-
-                // For website return as script
-                this.book.options.pluginsConfig.mathjax = this.book.options.pluginsConfig.mathjax || {};
-                if ((this.book.options.generator == "website" || this.book.options.generator == "json")
-                    && !this.book.options.pluginsConfig.mathjax.forceSVG) {
-                    return '<script type="math/tex; '+(isInline? "": "mode=display")+'">'+blk.body+'</script>';
-                }
-
-                // Check if not already cached
-                var hashTex = crc.crc32(tex).toString(16);
-
-                // Return
-                var imgFilename = "_mathjax_"+hashTex+".svg";
-                var img = '<img src="/'+imgFilename+'" />';
-                if (!isInline) {
-                    img = '<div style="text-align:center;margin: 1em 0em;width: 100%;">'+img+'</div>';
-                }
-
-                return {
-                    body: img,
-                    post: function() {
-                        if (cache[hashTex]) return;
-
-                        cache[hashTex] = true;
-                        countMath = countMath + 1;
-
-                        return convertTexToSvg(tex, { inline: isInline })
-                        .then(function(svg) {
-                            return Q.nfcall(fs.writeFile, path.join(that.book.options.output, imgFilename), svg);
-                        });
-                    }
-                };
-            }
+            process: processBlock
         }
     }
 };
