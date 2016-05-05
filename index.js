@@ -3,7 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var crc = require('crc');
 var exec = require('child_process').exec;
-var mjAPI = require('MathJax-node');
+var mjAPI = require('MathJax-node/lib/mj-single.js');
 
 var started = false;
 var countMath = 0;
@@ -43,15 +43,15 @@ function convertTexToSvg(tex, options) {
     prepareMathJax();
 
     mjAPI.typeset({
-        math: tex,
-        format: (options.inline ? 'inline-TeX' : 'TeX'),
-        svg: true,
-        speakText: options.speakText || "default",
-        speakRuleset: (options.speechrules || "mathspeak").replace(/^chromevox$/i, 'default'),
-        speakStyle: options.speechstyle || "default",
-        ex: options.ex || 6,
-        width: options.width || 100,
-        linebreaks: !!options.linebreaks
+        math:           tex,
+        format:         (options.inline ? 'inline-TeX' : 'TeX'),
+        svg:            true,
+        speakText:      true,
+        speakRuleset:   'mathspeak',
+        speakStyle:     'default',
+        ex:             6,
+        width:          100,
+        linebreaks:     true
     }, function (data) {
         if (data.errors) {
             return d.reject(new Error(data.errors));
