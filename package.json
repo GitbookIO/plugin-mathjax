@@ -9,7 +9,7 @@
     "dependencies": {
         "crc": "^3.2.1",
         "gitbook-core": "4.0.0",
-        "MathJax-node": "0.3.1",
+        "mathjax-node": "0.5.2",
         "q": "^1.1.2"
     },
     "devDependencies": {
