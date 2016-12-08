@@ -1,6 +1,6 @@
 var Promise = require('q');
 var crc     = require('crc');
-var mjAPI   = require('MathJax-node/lib/mj-single.js');
+var mjAPI   = require('mathjax-node/lib/mj-single.js');
 
 var started   = false;
 var countMath = 0;
