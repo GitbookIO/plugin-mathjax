@@ -3,7 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var crc = require('crc');
 var exec = require('child_process').exec;
-var mjAPI = require('MathJax-node/lib/mj-single.js');
+var mjAPI = require('mathjax-node/lib/mj-single.js');
 
 var started = false;
 var countMath = 0;
