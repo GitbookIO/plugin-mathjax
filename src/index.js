@@ -1,6 +1,10 @@
 const GitBook = require('gitbook-core');
 const { React } = GitBook;
 
+/**
+ * Math block when using SVG mode.
+ * @type {ReactClass}
+ */
 const MathJaxSVG = React.createClass({
     propTypes: {
         inline:   React.PropTypes.bool.isRequired,
@@ -10,12 +14,11 @@ const MathJaxSVG = React.createClass({
     render() {
         const { inline, filename } = this.props;
 
-        const img = <img src={`/${filename}`} />;
+        const img = <GitBook.Image src={filename} />;
 
         if (inline) {
             return img;
-        }
-        else {
+        } else {
             return (
                 <div className="MathJaxBlock-MathJaxSVG">
                     {img}
@@ -25,6 +28,10 @@ const MathJaxSVG = React.createClass({
     }
 });
 
+/**
+ * Math templating block.
+ * @type {ReactClass}
+ */
 const MathJaxBlock = React.createClass({
     propTypes: {
         isSVG:    React.PropTypes.bool.isRequired,
