@@ -3,6 +3,7 @@
     "name": "gitbook-plugin-mathjax",
     "description": "Insert math and LaTeX equations in your pages.",
     "main": "index.js",
+    "icon": "./icon.png",
     "version": "1.1.2",
     "engines": {
         "gitbook": ">=4.0.0-alpha"
