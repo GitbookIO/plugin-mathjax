@@ -49,7 +49,7 @@ const MathJaxBlock = React.createClass({
             { isSVG ?
                 null
                 :
-                <GitBook.ImportScript src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
+                <GitBook.ImportScript src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
             }
             { isSVG ?
                 <MathJaxSVG filename={filename} inline={inline} />
