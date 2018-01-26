@@ -68,3 +68,9 @@ module.exports = GitBook.createPlugin({
         dispatch(Components.registerComponent(MathJaxBlock, { role: 'block:math' }));
     }
 });
+
+require(["gitbook", "jQuery"], function(gitbook, $) {
+      gitbook.events.bind("page.change", function() {
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+  });
+}
