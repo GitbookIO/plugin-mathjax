@@ -31,7 +31,7 @@
             "version": {
                 "type": "string",
                 "title": "Version of MathJAX to use for website rendering",
-                "default": "2.6-latest"
+                "default": "2.7.1"
             }
         }
     }

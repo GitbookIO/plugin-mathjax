@@ -118,12 +118,12 @@ function processBlock(blk) {
     @return {Object}
 */
 function getWebsiteAssets() {
-    var version = this.config.get('pluginsConfig.mathjax.version', 'latest');
+    var version = this.config.get('pluginsConfig.mathjax.version', '2.7.1');
 
     return {
         assets: "./book",
         js: [
-            'https://cdn.mathjax.org/mathjax/' + version + '/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
+            'https://cdnjs.cloudflare.com/ajax/libs/mathjax/' + version + '/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
             'plugin.js'
         ]
     };
