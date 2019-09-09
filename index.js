@@ -3,7 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var crc = require('crc');
 var exec = require('child_process').exec;
-var mjAPI = require('mathjax-node/lib/mj-single.js');
+var mjAPI = require('mathjax-node/lib/main.js');
 
 var started = false;
 var countMath = 0;
@@ -118,7 +118,7 @@ function processBlock(blk) {
     @return {Object}
 */
 function getWebsiteAssets() {
-    var version = this.config.get('pluginsConfig.mathjax.version', '2.7.1');
+    var version = this.config.get('pluginsConfig.mathjax.version', '2.7.6');
 
     return {
         assets: "./book",

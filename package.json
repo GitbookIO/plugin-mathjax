@@ -7,7 +7,7 @@
         "gitbook": ">=3.0.0"
     },
     "dependencies": {
-        "mathjax-node": "0.5.2",
+        "mathjax-node": "2.0.0",
         "q": "^1.1.2",
         "crc": "^3.2.1"
     },
@@ -31,7 +31,7 @@
             "version": {
                 "type": "string",
                 "title": "Version of MathJAX to use for website rendering",
-                "default": "2.7.1"
+                "default": "2.7.6"
             }
         }
     }
