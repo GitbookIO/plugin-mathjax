@@ -7,7 +7,7 @@
         "gitbook": ">=3.0.0"
     },
     "dependencies": {
-        "mathjax-node": "2.0.0",
+        "mathjax-node": "1.2.1",
         "q": "^1.1.2",
         "crc": "^3.2.1"
     },
